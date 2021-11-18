@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="jquery-3.6.0.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>AD</title>
+    <script src="min.js"></script>
+    <script src="script.js"></script>
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="hidden">
+        <div class="popup">
+            <div class="popupWindow">
+                <form id="form">
+                    <p>Имя пользователя</p>
+                    <input type="text"  id="name" name="name" class="form-control" value="" placeholder="Имя" minlength="2" maxlength="30" required="required"><br/>
+                    <p>E-mail пользователя:</p>
+                    <input type="email"  id="email" required="required" class="form-control" value="" placeholder="Email-адрес"><br/>
+                    <p>Сообщение</p>
+                    <textarea id="message" name="message" class="form-control" rows="3" placeholder="Сообщение (не менее 20 символов)" minlength="20" maxlength="500" required="required" ></textarea></p>
+                    <input type="checkbox" name="agreement">Согласен на обработку данных<br/>
+                    <input id="sendBut" type="submit" name="send" value="Отправить">
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <input id="openBut" type="submit" value="Open form">
+
+</body>
+</html>
