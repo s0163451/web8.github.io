@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css">
+    <script src="popup.js"></script>
+</head>
+<body>
+
+<h1>Всплывающая форма</h1>
+<button class="open-button" onclick="openForm()">Открыть форму</button>
+
+<div class="form-popup" id="myForm">
+  <form action="../action_page.php" class="form-container">
+     <!-- Форма обратной связи -->
+          <form id="feedbackForm" action="/feedback/process/process.php" enctype="multipart/form-data" novalidate>
+            <div class="form-row">
+              <div class="col-sm-6">
+                <!-- Имя пользователя -->
+                <div class="form-group">
+                  <label for="name" class="control-label">Имя</label>
+                  <input id="name" type="text" name="name" class="form-control" value="" placeholder="Имя" minlength="2" maxlength="30" required="required">
+                  <div class="invalid-feedback"></div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <!-- Email пользователя -->
+                <div class="form-group">
+                  <label for="email" class="control-label">Email-адрес</label>
+                  <input id="email" type="email" name="email" required="required" class="form-control" value="" placeholder="Email-адрес">
+                  <div class="invalid-feedback"></div>
+                </div>
+              </div>
+            </div>
+            <!-- Сообщение пользователя -->
+            <div class="form-group">
+              <label for="message" class="control-label">Сообщение (не менее 20 символов)</label>
+              <textarea id="message" name="message" class="form-control" rows="3" placeholder="Сообщение (не менее 20 символов)" minlength="20"
+                maxlength="500" required="required"></textarea>
+              <div class="invalid-feedback"></div>
+            </div>
+Согласны на обработку данных:<br />
+      <label> <input type="checkbox" checked="checked" name="check-1" />Да</label><br />
+    <button type="submit" class="btn">Отправить</button>
+    <button type="button" class="btn cancel" onclick="closeForm()">Закрыть</button>
+
+  </form>
+</div>
+
+
+
+</body>
+</html>
