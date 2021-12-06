@@ -1,70 +1,76 @@
 
-let isOpen = true;
-let isClick = false;
-let hash = window.location.hash;
-
-$(function () {
-    setInterval(function () {
-        if (window.location.hash !== hash && isClick) {
-            hash = window.location.hash;
-            console.log("hash has been changed!");
-            if (isOpen) {
-                closePopup();
-                isOpen = false;
-            } else {
-                openPopup();
-                isOpen = true;
-            }
-        }
-    }, 100);
-
-    $("#openBut").click(function () {
-        isClick = false;
-        console.log("click on button");
-        openPopup();
-    });
-
-    function openPopup(){
-        console.log("open!");
-        if (!isClick) {
-            let stateObj = {task8: "#form"};
-            history.pushState(stateObj, null, "#form");
-            isClick = true;
-            isOpen = true;
-        }
-        $(".hidden").css("background-color", "rgba(0, 0, 0, 0.31)").show();
-        hash = window.location.hash;
+let modal = {
+    closeModal: ()=>{
+      this.wrapper.style.display = "none";
+      window.history.pushState({"formtoggle": false},"","index.html");
+    },
+    openModal: ()=>{
+      this.wrapper.style.display = "flex";
+      window.history.pushState({"formtoggle": true},"","#form");
     }
-
-    function closePopup(){
-        console.log("close!");
-        $(".hidden").css("background-color", "rgba(255,255,255)").hide();
-    }
-
-    $("#form").submit(function(e){
-        e.preventDefault();
-        let formData = new FormData(document.querySelector('form'));
-        let object = {};
-        formData.forEach((value, key) => object[key] = value);
-        let jsonString = JSON.stringify(object);
-        let href = "https://formcarry.com/s/HaKvssAuc9l";
-        $.ajax({
-            type: "POST",
-            dataType: "json",
-            url: href,
-            data: JSON.parse(jsonString),
-            success: function(response){
-                if(response.status === "success"){
-                    alert("Data was successfully sent!");
-                    document.getElementById('form').reset();
-                }else{
-                    alert("ERROR: " + response.message);
-                }
-            }
-        });
+  };
+  window.addEventListener("DOMContentLoaded", function(event){
+    modal["showbutton"] = document.getElementById("showbutton");
+    modal["wrapper"] = document.getElementById("wrapper");
+    modal["closeX"] = document.getElementById("close"); //закрытие X
+    modal["fields"] = document.querySelectorAll(".fields");
+    modal["submitButton"] = document.getElementById("submitbutton");
+    modal["postForm"] = document.getElementById("contact");
+    modal.fields.forEach((element) => {   //реализация локального хранилища
+        element.value = localStorage.getItem(element.name);
+        element.addEventListener("blur",
+        (event)=>localStorage.setItem(event.target.name, event.target.value));
     });
-
-    localStorage.setItem("name", document.getElementById("name").value);
-    localStorage.setItem("email", document.getElementById("email").value);
-    localStorage.setItem("comment", document.getElementById("comment").value);
-});
+    modal.closeX.addEventListener("click",modal.closeModal);
+    modal.showbutton.onclick = modal.openModal;
+    window.onclick = function(event) { //закрытие окна при нажатии за его пределами
+    if(event.target === modal.wrapper)
+    {
+     modal.closeModal();
+    }
+    };
+    window.history.pushState({"formtoggle": false},"","index.html"); //история API реализации
+    window.addEventListener("popstate",(event) => {
+    (event.state.formtoggle)? (modal.wrapper.style.display = "flex") : (modal.wrapper.style.display = "none");
+    });
+    window.addEventListener("keydown",function(event){ //закрытие окна при нажатии клавиши Esc
+        if(modal.wrapper.style.display!=="none")
+        {
+            switch(event.key){
+                case "Esc":
+                case "Escape":
+                    modal.closeModal();
+                break;
+        }
+    }
+    });
+    (modal.fields.item(3).checked)? (modal.submitButton.disabled=false) : (modal.submitButton.disabled=true);
+    modal.fields.item(3).addEventListener("change", (event)=>
+    {(event.target.checked)? (modal.submitButton.disabled=false) : (modal.submitButton.disabled=true);});
+    modal.postForm.addEventListener("submit", function(event){  //AJAX USING FETCH
+        event.preventDefault();
+        fetch("https://formcarry.com/s/HaKvssAuc9l",
+        {
+            method:"POST",
+            headers:
+            {
+                "Content-type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify(Object.fromEntries(new FormData(modal.postForm)))
+        })
+        .then(function(response){
+            if(!response.ok)
+            {
+                throw new Error(response.status);
+            }
+            return response;
+        })
+        .then((response)=>{alert("Форма отправлена!");
+            console.log(response.text());})
+        .catch((error)=>{alert("Ошибка!");
+            console.log(error);});
+        modal.fields.forEach((element) => {element.value = "";});
+        localStorage.clear();
+    });
+  });
