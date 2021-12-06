@@ -1,33 +1,42 @@
+
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <script src="jquery-3.6.0.min.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta charset="UTF-8">
-    <title>AD</title>
-    <script src="min.js"></script>
-    <script src="script.js"></script>
-    <link href="style.css" rel="stylesheet">
-</head>
-<body>
-    <div class="hidden">
-        <div class="popup">
-            <div class="popupWindow">
-                <form id="form">
-                    <p>Имя пользователя</p>
-                    <input type="text"  id="name" name="name" class="form-control" value="" placeholder="Имя" minlength="2" maxlength="30" required="required"><br/>
-                    <p>E-mail пользователя:</p>
-                    <input type="email"  id="email" required="required" class="form-control" value="" placeholder="Email-адрес"><br/>
-                    <p>Сообщение</p>
-                    <textarea id="message" name="message" class="form-control" rows="3" placeholder="Сообщение (не менее 20 символов)" minlength="20" maxlength="500" required="required" ></textarea></p>
-                    <input type="checkbox" name="agreement">Согласен на обработку данных<br/>
-                    <input id="sendBut" type="submit" name="send" value="Отправить">
+<html lang="ru">
+    <head>
+       <meta charset='utf-8'/>
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'/>
+        <title>AD</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1'/>
+        <link rel="stylesheet" type="text/css" href="style.css"/>
+        <script src='script.js' defer></script>
+    </head>
+    <body>
+    <button id="showbutton"> Отправить форму </button>
+    <div id="wrapper">
+            <div class="modalcontent">
+            <span id="close"> [х] </span>
+            <form id="contact" name="contact" method="POST" accept-charset="UTF-8">
+                <label>
+                   Имя пользователя: <br/>
+                    <input id="field1" type="text" name="name" placeholder="Имя" class="fields"/>
+                </label> 
+                <br/>  
+                <label>
+         E-mail пользователя:<br />
+<input name="field-email" type="email" placeholder="Ваша почта:" class="fields"/>
+      </label><br />
+                <label>
+                    О вас:<br/>
+                    <textarea name="fieldmessage" placeholder="Расскажите немного о себе" class="fields"></textarea>
+                </label> 
+                <br/>
+                <label>
+                    <input name="check" type="checkbox" class="fields"/>
+                    Я согласен(-на) с политикой конфиденциальности
+                </label> 
+                <br/>
+                <input type="submit" name="subbutton" id="submitbutton" disabled/> 
                 </form>
             </div>
         </div>
-    </div>
-
-    <input id="openBut" type="submit" value="Open form">
-
-</body>
+    </body>
 </html>
